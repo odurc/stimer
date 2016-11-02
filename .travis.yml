@@ -1,0 +1,14 @@
+sudo: required
+dist: trusty
+language:
+    - c
+compiler:
+    - gcc
+before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq valgrind
+script:
+    - make
+    - cd test
+    - make
+    - make run-tests
