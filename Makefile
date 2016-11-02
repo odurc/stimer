@@ -25,6 +25,11 @@ LIBS =
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(SRC:.c=.o)
 
+# library version
+LIB_VERSION = $(shell grep -oP "define.*VERSION[ \t]*\K[0-9.\"]*" $(SRC_DIR)/$(LIB_NAME).h)
+
+.PHONY: doc
+
 $(OUTPUT): $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) $(LIBS) -o $@
 
@@ -33,3 +38,7 @@ $(OUTPUT): $(OBJ)
 
 clean:
 	rm -f $(OBJ) $(OUTPUT)
+
+doc:
+	@( cat Doxyfile ; echo "PROJECT_NUMBER=$(LIB_VERSION)" ) | doxygen -
+	@echo "Documentation for $(LIB_NAME) version $(LIB_VERSION) generated"
