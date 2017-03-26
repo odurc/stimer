@@ -75,14 +75,14 @@ stimer_t g_timers[STIMER_MAX_INSTANCES];
 ****************************************************************************************************
 */
 
-static inline void *stimer_take(void)
+static inline stimer_t* stimer_take(void)
 {
     static unsigned int stimer_counter;
 
     // first time timers are requested
     if (stimer_counter < STIMER_MAX_INSTANCES)
     {
-        stimer_t *timer  = &g_timers[stimer_counter++];
+        stimer_t *timer = &g_timers[stimer_counter++];
         return timer;
     }
 
@@ -98,13 +98,10 @@ static inline void *stimer_take(void)
     return 0;
 }
 
-static inline void stimer_give(void *timer)
+static inline void stimer_give(stimer_t *timer)
 {
     if (timer)
-    {
-        stimer_t *self = timer;
-        self->enabled = -1;
-    }
+        timer->enabled = -1;
 }
 
 
@@ -114,7 +111,7 @@ static inline void stimer_give(void *timer)
 ****************************************************************************************************
 */
 
-stimer_t *stimer_create(stimer_mode_t mode, void (*callback)(void *arg))
+stimer_t* stimer_create(stimer_mode_t mode, void (*callback)(void *arg))
 {
     stimer_t *timer = stimer_take();
 

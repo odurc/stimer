@@ -26,6 +26,12 @@
 #ifndef STIMER_H
 #define STIMER_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /*
 ****************************************************************************************************
 *       INCLUDE FILES
@@ -110,7 +116,7 @@ typedef enum stimer_mode_t {STIMER_ONE_SHOT, STIMER_LOOP} stimer_mode_t;
  *
  * @return pointer to stimer object or NULL if no more timers are available
  */
-stimer_t *stimer_create(stimer_mode_t mode, void (*callback)(void *arg));
+stimer_t* stimer_create(stimer_mode_t mode, void (*callback)(void *arg));
 
 /**
  * Destroy stimer object
@@ -196,4 +202,9 @@ void stimer_tick(void);
 #error "STIMER_TICK_PERIOD macro value must be set between 1 and 1000"
 #endif
 
+#ifdef __cplusplus
+}
+#endif
+
+// STIMER_H
 #endif

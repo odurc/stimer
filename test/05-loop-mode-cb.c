@@ -3,7 +3,7 @@
 
 void timer_cb(void *arg)
 {
-    stimer_t *timer = arg;
+    stimer_t *timer = (stimer_t *) arg;
 
     static int cb_counter;
     printf("timer callback %i\n", cb_counter++);
