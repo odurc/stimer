@@ -54,7 +54,7 @@ extern "C"
 */
 
 // library version
-#define STIMER_VERSION  "1.1.0"
+#define STIMER_VERSION  "1.2.0"
 
 // macro to set no callback mode
 #define STIMER_NO_CALLBACK  0
