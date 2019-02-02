@@ -39,7 +39,8 @@ Once the *STIMER_TICK_PERIOD* setting is done, the call of the function stimer_t
 must be placed inside of the ISR function. Ideally the user should use a hardware timer
 ISR exclusively for this purpose.
 
-To see more details how to use the library, please check the online [API documentation](http://ricardocrudo.github.io/stimer).
+To see more details how to use the library, please check the online [API documentation]
+(http://ricardocrudo.github.io/stimer).
 
 
 License

@@ -57,6 +57,7 @@ struct stimer_t {
     int enabled, overflow;
     stimer_mode_t mode;
     void (*callback)(void *arg);
+    void *arg;
 };
 
 
@@ -121,6 +122,7 @@ stimer_t* stimer_create(stimer_mode_t mode, void (*callback)(void *arg))
         timer->overflow = 0;
         timer->mode = mode;
         timer->callback = callback;
+        timer->arg = timer;
     }
 
     return timer;
@@ -169,6 +171,11 @@ int stimer_overflow(stimer_t *timer)
     return overflow;
 }
 
+void stimer_argument(stimer_t *timer, void *arg)
+{
+    timer->arg = arg ? arg : timer;
+}
+
 void stimer_tick(void)
 {
     for (int i = 0; i < STIMER_MAX_INSTANCES; i++)
@@ -190,7 +197,7 @@ void stimer_tick(void)
                 if (timer->mode == STIMER_ONE_SHOT)
                     timer->enabled = 0;
 
-                timer->callback(timer);
+                timer->callback(timer->arg);
                 timer->overflow = 0;
             }
 

@@ -2,7 +2,7 @@
  * stimer - Simple Timer Library
  * https://github.com/ricardocrudo/stimer
  *
- * Copyright (c) 2016 Ricardo Crudo <ricardo.crudo@gmail.com>
+ * Copyright (c) 2019 Ricardo Crudo <ricardo.crudo@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ */
+
+/**
+ * @file stimer.h
+ * @author Ricardo Crudo
+ * @brief Simple Timer Library
  */
 
 #ifndef STIMER_H
@@ -65,10 +71,14 @@ extern "C"
 ****************************************************************************************************
 */
 
-// tick period in us
+/** @def STIMER_TICK_PERIOD
+ *  Define the tick period in us
+ */
 #define STIMER_TICK_PERIOD      1000
 
-// maximum of timers instances
+/** @def STIMER_MAX_INSTANCES
+ *  Define the maximum of timers instances
+ */
 #define STIMER_MAX_INSTANCES    10
 
 
@@ -85,10 +95,13 @@ extern "C"
 typedef struct stimer_t stimer_t;
 
 /**
- * @struct stimer_mode_t
+ * @enum stimer_mode_t
  * Timer operating modes
  */
-typedef enum stimer_mode_t {STIMER_ONE_SHOT, STIMER_LOOP} stimer_mode_t;
+typedef enum stimer_mode_t {
+    STIMER_ONE_SHOT,        ///< one shot mode (stop after first overflow)
+    STIMER_LOOP             ///< loop mode (keep running after overflow)
+} stimer_mode_t;
 
 
 /*
@@ -106,10 +119,13 @@ typedef enum stimer_mode_t {STIMER_ONE_SHOT, STIMER_LOOP} stimer_mode_t;
 /**
  * Create stimer object
  *
- * When creating a stimer the mode must be passed as the first argument.
- * It must be one of the values defined by stimer_mode_t enumeration. The second
- * argument might be a function pointer which is called when the timer overflow happen
- * or the macro STIMER_NO_CALLBACK indicating that no callback is required.
+ * When creating a timer the mode must be passed as the first argument and it must be one of the
+ * values defined by stimer_mode_t enumeration. The second argument must be either a function
+ * pointer or the macro STIMER_NO_CALLBACK. In case a callback function is provided, it will be
+ * called when the timer overflow happens.
+ *
+ * By default the callback provides the timer object as argument. A custom argument can be defined
+ * using the function stimer_argument().
  *
  * @param[in] mode must be either STIMER_ONE_SHOT or STIMER_LOOP
  * @param[in] callback a function callback pointer or the macro STIMER_NO_CALLBACK
@@ -174,6 +190,18 @@ void stimer_reset(stimer_t *timer);
  * @return number of times the timer overflow
  */
 int stimer_overflow(stimer_t *timer);
+
+/**
+ * Set the timer argument
+ *
+ * This function is only useful when a callback is provided during the timer creation.
+ * In case a custom argument is required when the callback is evoked, this function has
+ * to be used to replace the original argument, which is the timer object itself.
+ *
+ * @param[in] timer stimer object pointer
+ * @param[in] arg the custom argument of the callback function
+ */
+void stimer_argument(stimer_t *timer, void *arg);
 
 /**
  * The tick function
