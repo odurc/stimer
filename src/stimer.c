@@ -182,7 +182,7 @@ void stimer_tick(void)
     {
         stimer_t *timer = &g_timers[i];
 
-        if (!timer->enabled)
+        if (timer->enabled != 1)
             continue;
 
         if (timer->counter > 0)
