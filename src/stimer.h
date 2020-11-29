@@ -122,7 +122,8 @@ typedef enum stimer_mode_t {
  * When creating a timer the mode must be passed as the first argument and it must be one of the
  * values defined by stimer_mode_t enumeration. The second argument must be either a function
  * pointer or the macro STIMER_NO_CALLBACK. In case a callback function is provided, it will be
- * called when the timer overflow happens.
+ * called when the timer overflow happens. Timers without callback only stop counting either after
+ * stimer_stop() or stimer_overflow() is called.
  *
  * By default the callback provides the timer object as argument. A custom argument can be defined
  * using the function stimer_argument().
@@ -156,6 +157,8 @@ void stimer_set_time(stimer_t *timer, uint32_t time_ms);
 /**
  * Start the timer
  *
+ * This function also restarts a stopped timer.
+ *
  * @param[in] timer stimer object pointer
  */
 void stimer_start(stimer_t *timer);
@@ -183,13 +186,14 @@ void stimer_reset(stimer_t *timer);
  * Check timer overflow
  *
  * Note that once this function is called the overflow counter is zeroed. This is,
- * a second subsequent call will return zero.
+ * a second subsequent call will return zero. This function may also be called from the
+ * callback function in case it is defined. This function is not thread safe.
  *
  * @param[in] timer stimer object pointer
  *
  * @return number of times the timer overflow
  */
-int stimer_overflow(stimer_t *timer);
+uint8_t stimer_overflow(stimer_t *timer);
 
 /**
  * Set the timer argument

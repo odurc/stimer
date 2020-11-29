@@ -54,7 +54,8 @@
 
 struct stimer_t {
     uint32_t time, counter;
-    int enabled, overflow;
+    uint8_t overflow;
+    int enabled;
     stimer_mode_t mode;
     void (*callback)(void *arg);
     void *arg;
@@ -156,9 +157,9 @@ void stimer_reset(stimer_t *timer)
     stimer_set_time(timer, timer->time);
 }
 
-int stimer_overflow(stimer_t *timer)
+uint8_t stimer_overflow(stimer_t *timer)
 {
-    int overflow = timer->overflow;
+    uint8_t overflow = timer->overflow;
     timer->overflow = 0;
 
     // disable and reload timer
@@ -190,7 +191,8 @@ void stimer_tick(void)
 
         if (timer->counter == 0)
         {
-            timer->overflow++;
+            if (timer->overflow < UINT8_MAX)
+                timer->overflow++;
 
             if (timer->callback)
             {
