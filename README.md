@@ -43,6 +43,17 @@ To see more details how to use the library, please check the online
 [API documentation](http://ricardocrudo.github.io/stimer).
 
 
+Build
+---
+
+    mkdir -p build && cd build
+    cmake .. -DENABLE_TESTS=Yes -DENABLE_LINTER=Yes -DENABLE_COVERAGE=Yes -DCMAKE_BUILD_TYPE=Debug
+    make -j`nproc`
+    ctest -V
+    ctest -V -T coverage
+    ctest -V -T memcheck
+
+
 License
 ---
 
