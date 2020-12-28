@@ -1,0 +1,36 @@
+stages:
+  - build
+  - test
+
+image: odurc/c-dev-tools
+
+variables:
+  BUILD_DIR: build
+
+build:
+  stage: build
+  variables:
+    BUILD_TYPE: Debug
+    BUILD_OPTIONS: "-DENABLE_TESTS=Yes -DENABLE_LINTER=Yes -DENABLE_COVERAGE=Yes"
+  script:
+    - mkdir -p ${BUILD_DIR} && cd ${BUILD_DIR}
+    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${BUILD_OPTIONS} ..
+    - make -j$(nproc)
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - ${BUILD_DIR}
+
+coverage:
+  stage: test
+  script:
+    - cd ${BUILD_DIR}
+    - ctest
+    - ctest -T coverage
+
+memcheck:
+  stage: test
+  script:
+    - cd ${BUILD_DIR}
+    - ctest
+    - ctest -T memcheck
