@@ -1,8 +1,9 @@
 cmake_minimum_required (VERSION 3.14)
 
 # project definitions
-project(stimer C)
-set(LIBRARY_VERSION "1.3.0")
+project(stimer VERSION 1.3.0
+    DESCRIPTION "Simple Timer Library"
+    LANGUAGES C)
 set(CMAKE_C_STANDARD 99)
 
 # add local cmake modules to be loaded by include()
@@ -12,6 +13,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 option(ENABLE_TESTS     "Build and run tests" OFF)
 option(ENABLE_LINTER    "Enable linter - static code check" OFF)
 option(ENABLE_COVERAGE  "Enable coverage" OFF)
+option(GENERATE_DOC     "Generate documentation" OFF)
 
 # define default build type
 if (NOT CMAKE_BUILD_TYPE)
@@ -63,6 +65,27 @@ file(GLOB SRC "src/*.c")
 # build static library
 set(STIMER_LIBRARY_NAME ${CMAKE_PROJECT_NAME})
 add_library(${STIMER_LIBRARY_NAME} STATIC ${SRC})
+
+# set up doxygen and create command to generate documentation
+find_package(Doxygen REQUIRED)
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc)
+    set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
+    set(DOXYGEN_GENERATE_LATEX NO)
+
+    doxygen_add_docs(doc ${CMAKE_CURRENT_SOURCE_DIR}/README.md ${CMAKE_CURRENT_SOURCE_DIR}/src
+        COMMENT "Generating API documentation with Doxygen")
+
+    # build documentation together with source code in case GENERATE_DOC is set by the user
+    if(GENERATE_DOC)
+        # add `doc` target as dependency of the project target to force build
+        add_dependencies(${CMAKE_PROJECT_NAME} doc)
+    endif()
+elseif(GENERATE_DOC)
+    message(WARNING "Doxygen was not found, cannot generate documentation")
+endif()
 
 include(CTest)
 
