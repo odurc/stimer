@@ -39,22 +39,12 @@ Once the *STIMER_TICK_PERIOD* setting is done, the call of the function stimer_t
 must be placed inside of the ISR function. Ideally the user should use a hardware timer
 ISR exclusively for this purpose.
 
-To see more details how to use the library, please check the online
-[API documentation](http://ricardocrudo.github.io/stimer).
-
-
-Build
----
-
-    mkdir -p build && cd build
-    cmake .. -DENABLE_TESTS=Yes -DENABLE_LINTER=Yes -DENABLE_COVERAGE=Yes -DCMAKE_BUILD_TYPE=Debug
-    make -j`nproc`
-    ctest -V
-    ctest -V -T coverage
-    ctest -V -T memcheck
+To see more details how to use the library, please check the online [API documentation][].
 
 
 License
 ---
 
 MIT
+
+[API documentation]: https://odurc.gitlab.io/stimer

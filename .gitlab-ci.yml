@@ -34,3 +34,11 @@ memcheck:
     - cd ${BUILD_DIR}
     - ctest
     - ctest -T memcheck
+
+pages:
+  script:
+    - make doc -C ${BUILD_DIR}
+    - mv ${BUILD_DIR}/doc/html/ public/
+  artifacts:
+    paths:
+      - public
