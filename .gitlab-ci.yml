@@ -25,14 +25,21 @@ coverage:
   stage: test
   script:
     - cd ${BUILD_DIR}
-    - ctest
-    - ctest -T coverage
+    - make test
+    - make coverage
+    - mv coverage ..
+  coverage: '/Percentage Coverage: (\d+.\d+%)$/'
+  artifacts:
+    reports:
+      cobertura: coverage/cobertura.xml
+    paths:
+      - coverage
 
 memcheck:
   stage: test
   script:
     - cd ${BUILD_DIR}
-    - ctest
+    - make test
     - ctest -T memcheck
 
 pages:

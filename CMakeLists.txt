@@ -57,6 +57,21 @@ if(ENABLE_COVERAGE)
     message(STATUS "Coverage enabled")
     add_compile_options(--coverage)
     add_link_options(--coverage)
+
+    # coverage depends on unit tests
+    set(ENABLE_TESTS Yes)
+
+    # create target for coverage (i.e.: `make coverage`)
+    set(GCOVR_OUT_DIR coverage)
+    set(GCOVR_HTML_OUT ${GCOVR_OUT_DIR}/coverage.html)
+    set(GCOVR_XML_OUT ${GCOVR_OUT_DIR}/cobertura.xml)
+    set(GCOVR_FILTER ${PROJECT_SOURCE_DIR}/src)
+    add_custom_target(coverage
+        COMMAND rm -rf ${GCOVR_OUT_DIR} && mkdir -p ${GCOVR_OUT_DIR}
+        COMMAND gcovr --html-details ${GCOVR_HTML_OUT} --xml-pretty -x ${GCOVR_XML_OUT}
+            --filter ${GCOVR_FILTER} --root ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ctest -T coverage
+        COMMENT "Generating coverage summary")
 endif()
 
 # source code
