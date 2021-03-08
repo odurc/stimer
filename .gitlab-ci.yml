@@ -5,7 +5,8 @@ stages:
 image: odurc/c-dev-tools
 
 variables:
-  BUILD_DIR: build
+  BUILD_DIR: "build"
+  CTEST_OUTPUT_ON_FAILURE: "True"
 
 build:
   stage: build
