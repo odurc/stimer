@@ -32,9 +32,9 @@ coverage:
   coverage: '/Percentage Coverage: (\d+.\d+%)$/'
   artifacts:
     reports:
-      cobertura: coverage/cobertura.xml
-    paths:
-      - coverage
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura.xml
 
 memcheck:
   stage: test
