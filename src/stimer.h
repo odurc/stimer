@@ -1,8 +1,8 @@
 /*
  * stimer - Simple Timer Library
- * https://github.com/ricardocrudo/stimer
+ * https://gitlab.com/odurc/stimer
  *
- * Copyright (c) 2019 Ricardo Crudo <ricardo.crudo@gmail.com>
+ * Copyright (c) 2022 Ricardo Crudo <ricardo.crudo@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -126,7 +126,10 @@ typedef enum stimer_mode_t {
  * stimer_stop() or stimer_overflow() is called.
  *
  * By default the callback provides the timer object as argument. A custom argument can be defined
- * using the function stimer_argument().
+ * using the function stimer_argument(). Be careful using callback functions since `stimer_tick()`
+ * is called from an ISR the callback will also called from the same ISR. If the provided callback
+ * function blocks or lingers to finish this will affect the timer counting and possibly create
+ * undesired behavior in your software.
  *
  * @param[in] mode must be either STIMER_ONE_SHOT or STIMER_LOOP
  * @param[in] callback a function callback pointer or the macro STIMER_NO_CALLBACK

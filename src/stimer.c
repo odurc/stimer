@@ -1,8 +1,8 @@
 /*
  * stimer - Simple Timer Library
- * https://github.com/ricardocrudo/stimer
+ * https://gitlab.com/odurc/stimer
  *
- * Copyright (c) 2016 Ricardo Crudo <ricardo.crudo@gmail.com>
+ * Copyright (c) 2022 Ricardo Crudo <ricardo.crudo@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
