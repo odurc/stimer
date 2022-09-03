@@ -1,0 +1,3 @@
+[submodule "cmake"]
+	path = cmake
+	url = https://gitlab.com/odurc/cmake-modules.git

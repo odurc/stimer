@@ -5,6 +5,7 @@ stages:
 image: odurc/c-dev-tools
 
 variables:
+  GIT_SUBMODULE_STRATEGY: recursive
   BUILD_DIR: "build"
   CTEST_OUTPUT_ON_FAILURE: "True"
 
